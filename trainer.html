@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Plotly.js -->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+      </head>
+<body bgcolor="#323232" text="efefef">
+<h3 align="center"><i><b>Bullseye Compute Intercept</b></i></h3>
+<table align="center">
+  <thead>
+      <tr><th></th><th></th><th>Bearing</th><th>Range</th></tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td align="left" style="padding: 0 20px 0 0"><input id="voice" type="checkbox" checked>AWACS Voice</td>
+        <td align="right">Self</td>
+        <td align="center"><input id="bearing1" type="number" value="0" min="0" max="360"></td>
+        <td align="center"><input id="range1" type="number" value="0" min="0" max="100"></td>
+      </tr>
+      <tr>
+        <td align="left"><button onclick="requestPicture()" width="100%"> Request Picture</button></td>
+        <td align="right">Target</td>
+        <td align="center"><input id="bearing2" type="number" value="0" min="0" max="360"></td>
+        <td align="center"><input id="range2" type="number" value="0" min="0" max="100"></td>
+      </tr>
+      <tr>
+        <td align="left"><button onclick="computeIntercept()" width="100%">Compute Heading</button></td>
+        <td align="right">Heading</td>
+        <td align="center"><output id="heading" type="number" name="heading" value="1"></td>
+        <td align="center"><output id="distance" type="number" name="distance" value="2"></td>
+      </tr>
+      <tr></tr><td colspan="3"></td></tr>
+  </tbody>
+</table>
+
+<center><div id="chart" style="margin: auto; max-width: 500px; max-height: 600px position: relative;"></div></center>
+<script>
+var self = {
+  x: [0],
+  y: [0],
+  mode: 'markers',
+  type: 'scatter',
+  marker: { size: 12, color: 'blue' },
+  showlegend: false,
+  name: "Self"
+};
+
+var target = {
+  x: [0],
+  y: [0],
+  mode: 'markers',
+  type: 'scatter',
+  marker: { size: 12, color: 'red' },
+  showlegend: false,
+  name: "Target"
+};
+
+var annot = {
+  x: [0,100,0, -100, 0,0,0],
+  y: [118, 3, -110, 3, 27, 57, 87],
+  mode: 'text',
+  text: ['360 Deg','090 Deg', '180 Deg', '270 Deg', '30','60', '90'],
+  marker: { size: 12, color: "#393939" },
+  textposition: 'bottom',
+  showlegend: false,
+  type: 'scatter'
+};
+
+function getAspect(bearing, rng ){
+  aspect = Math.round( Math.random() * 180);
+  track  = bearing - aspect;
+  if (track < 0) {
+    track += 360;
+  }
+
+  if (rng < 90 )
+  {
+    if (aspect > 120 ) {
+      return "hot";
+    }
+    else if (aspect > 80  ) {
+      return "beaming";
+    }
+    else if (aspect > 40  ) {
+      return "dragging";
+    }
+    return "cold";
+  }
+  else {
+      if (track > 315 || track < 45 ) {
+        return "track north";
+      }
+      else if (track > 225 ) {
+        return "track west";
+      }
+      else if (track > 135 ) {
+        return "track south";
+      }
+      return "track south";
+  }
+}
+function plotChart() {
+  Plotly.newPlot('chart', data, layout, options);
+}
+
+function computeCourse() {
+  var rad1 = parseFloat(bearing1.value) * Math.PI / 180;
+  var rad2 = parseFloat(bearing2.value) * Math.PI / 180;
+  var rng1 = parseFloat(range1.value);
+  var rng2 = parseFloat(range2.value);
+  var x1   = rng1 * Math.cos(-rad1);
+  var y1   = rng1 * Math.sin(-rad1);
+  var x2   = rng2 * Math.cos(-rad2);
+  var y2   = rng2 * Math.sin(-rad2);
+  var dx   = x2 - x1;
+  var dy   = y2 - y1;
+  var rng  = Math.sqrt((Math.pow(dx,2) + Math.pow(dy,2)) );
+  var rad  = -Math.atan2(dy,dx);
+  var crs = rad * 180 / Math.PI;
+  if ( crs < 0.0 ) {
+    crs += 360;
+  }
+  distance.value = Math.round(rng);
+  heading.value = Math.round(crs);
+
+  self.x[0] = -y1;
+  self.y[0] = x1;
+  target.x[0] = -y2;
+  target.y[0] = x2;
+}
+
+function computeIntercept() {
+  computeCourse();
+  plotChart();
+}
+
+function requestPicture() {
+  var bearing  = Math.round(Math.random() * 360);
+  var range    = Math.round(Math.random() * 120);
+  var altitude = Math.round(Math.random() * 20) * 1000 + 8000;
+  var groups   = Math.random() * 3;
+
+  bearing2.value = bearing;
+  range2.value   = range;
+
+  computeCourse();
+
+  // Check if TTS is supported
+  if ('speechSynthesis' in window && voice.checked == true) {
+    var head  = parseInt(heading.value);
+    var dist = parseInt(distance.value);
+
+    aspect = getAspect(head, dist);
+
+    // Under 25 Nm switch from Bullseye to BRAA
+    if ( dist  < 25 ) {
+      bearing = head;
+      range   = dist;
+    }
+
+    // Space individual digits for bearing
+    digit3 = Math.floor((bearing /   1) % 10);
+    digit2 = Math.floor((bearing /  10) % 10);
+    digit1 = Math.floor((bearing / 100) % 10);
+    bearing_str = digit1 + ' ' + digit2 + ' ' + digit3;
+
+    // Space individual digits for range
+    digit3 = Math.floor((range /   1) % 10);
+    digit2 = Math.floor((range /  10) % 10);
+    digit1 = Math.floor((range / 100) % 10);
+    range_str = digit1 + ' ' + digit2 + ' ' + digit3;
+
+    // e.g. 'Viper 1-1, Centry 1, picture is, one group,... bullseye 2 7 0, 33 miles,hot, hostile!');
+    if ( dist < 25) {
+      range_str = digit2 + ' ' + digit3;
+      var msg = new SpeechSynthesisUtterance('Viper 1 1, Centry 1, picture is, one group, bearing ' +
+                bearing_str + '! , range' + range_str + ' miles ,' + altitude + '! ,' + aspect + ' , hostile!');
+    }
+    else {
+      var msg = new SpeechSynthesisUtterance('Viper 1 1, Centry 1, picture is, one group, bullseye ' +
+                bearing_str + '! ,' + range_str + '! ,' + altitude + '! ,' + aspect + ' , hostile!');
+    }
+
+    msg.rate = 1.1;
+    msg.pitch = 0.7;
+    window.speechSynthesis.speak(msg);
+  }
+
+  plotChart();
+}
+
+var data = [ self, target, annot ];
+var options = {
+      scrollZoom: false,
+      showLink: false,
+      displayModeBar: false,
+      modeBarButtonsToRemove: [
+          'sendDataToCloud', 'zoom2d',
+          'pan', 'pan2d',
+          'autoScale2d',
+          'lasso2d', 'autoScale2d',
+          'toggleSpikelines','dragmode'
+      ]
+  };
+
+var layout = {
+  title: "Range Chart (Nm)",
+  hovermode: false,
+  dragmode: false,
+  //width: 550, height: 500,
+  autosize: true,
+  margin: { l: 33, r: 33, b: 33, t: 33, pad: 1 },
+  plot_bgcolor:"#323232", paper_bgcolor:"#323232",
+  font: { color: "white", size: 12 },
+  xaxis: {
+    title: "South",
+    range: [ -120, 120 ],
+    showgrid: false, zeroline: true, mirror: true,
+    gridcolor: "#efefef", linecolor: "#efefef", borderwidth: 1
+  },
+  yaxis: {
+    title: "West",
+    range: [-120, 120],
+    showgrid: false, zeroline: true, mirror: true,
+    gridcolor: "#efefef", linecolor: "#efefef", borderwidth: 1
+  },
+  shapes: [
+    {
+      type: 'circle', x0:  -30, y0: -30, x1: 30, y1: 30,
+      line: { color: "#595959", dash: 'dot' }
+    },
+    {
+      type: 'circle', x0:  -60, y0: -60, x1: 60, y1: 60,
+      line: { color: "#595959", dash: 'dot' }
+    },
+    {
+      type: 'circle', x0:  -90, y0: -90, x1: 90, y1:  90,
+      line: { color: "#595959", dash: 'dot' }
+    },
+    {
+      type: 'circle', x0:  -120, y0: -120, x1: 120, y1: 120,
+      line: { color: "#595959", dash: 'dot' }
+    },
+    {
+      type: 'circle', x0:  -150, y0: -150, x1: 150, y1: 150,
+      line: { color: "#595959", dash: 'dot' }
+    },
+    {
+      type: 'line', x0:  -120, y0: -120, x1: 120, y1: 120,
+      line: { color: "#595959" , width: 1}
+    },
+    {
+      type: 'line', x0:  -120, y0: 120, x1: 120, y1: -120,
+      line: { color: "#595959" , width: 1}
+    },
+  ]
+};
+plotChart();
+
+window.onresize = plotChart;
+</script>
+
+</body>
+</html>

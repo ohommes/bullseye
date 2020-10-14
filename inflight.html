@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Plotly.js -->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+      </head>
+<body bgcolor="#323232" text="efefef">
+<h3 align="center"><i><b>Flight Computer</b></i></h3>
+<h3 align="center"><i><b>Data Entry Display (DED)</b></i></h3>
+<table align="center" bgcolor="#000000" border="0" frame="box" width="300">
+  <tbody>
+      <tr>
+        <td align="right"><label style="background-color: #00F928; color: black; font: 'Courier New'" id="ded1_mrk_left">*</label></td>
+        <td align="center"><label style="color: #00F928; font: 'Courier New'" id="ded1_num"></label></td>
+        <td align="left"><label style="background-color: #00F928; color: black; font: 'Courier New'" id="ded1_mrk_right">*</label></td>
+        <td align="center"><label style="color: #00F928; font: 'Courier New'" id="ded1_bearing">---- DEG</label></td>
+        <td align="center"><label style="color: #00F928; font: 'Courier New'" id="ded1_range">---- NM</label></td>
+      </tr>
+      <tr>
+        <td align="right"><label style="background-color: #00F928; color: black; font: 'Courier New'" id="ded2_mrk_left"></label></td>
+        <td align="center"><label style="color: #00F928; font: 'Courier New'" id="ded2_num"></label></td>
+        <td align="left"><label style="background-color: #00F928; color: black; font: 'Courier New'" id="ded2_mrk_right"></label></td>
+        <td align="center"><label style="color: #00F928; font: 'Courier New'" id="ded2_bearing">---- DEG</label></td>
+        <td align="center"><label style="color: #00F928; font: 'Courier New'" id="ded2_range">---- NM</label></td>
+      </tr>
+      <tr>
+        <td align="right"><label style="background-color: #00F928; color: black; font: 'Courier New'" id="ded3_mrk_left"></label></td>
+        <td align="center"><label style="color: #00F928; font: 'Courier New'" id="ded3_num"></label></td>
+        <td align="left"><label style="background-color: #00F928; color: black; font: 'Courier New'" id="ded3_mrk_right"></label></td>
+        <td align="center"><label style="color: #00F928; font: 'Courier New'" id="ded3_bearing">---- DEG</label></td>
+        <td align="center"><label style="color: #00F928; font: 'Courier New'" id="ded3_range">---- NM</label></td>
+      </tr>
+      <tr>
+          <td align="right"><label style="background-color: #00F928; color: black; font: 'Courier New'" id="ded4_mrk_left"></label></td>
+          <td width=25% align="center"><label style="color: #00F928; font: 'Courier New'" id="ded4_num"></label></td>
+          <td align="left"><label style="background-color: #00F928; color: black; font: 'Courier New'" id="ded4_mrk_right"></label></td>
+          <td align="center"><label style="color: #00F928; font: 'Courier New'" id="ded_bullseye">BULL GRP1</label></td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<h3 align="center"><i><b>Integrated Control Panel (ICP)</b></i></h3>
+<table align="center" border="0">
+  <tbody>
+      <tr>
+        <td><input type="image" onclick="buttonPress()" id="icp_one" alt="1" src="https://drive.google.com/uc?id=1j7ptNEQueRZkLOS8mwoj8hzA5wZPK0EF" height="65"></td>
+        <td><input type="image" onclick="buttonPress()" id="icp_two" alt="2" src="https://drive.google.com/uc?id=1EEMn5JFGNbzW-4WHiFA74T6s-SJT7dQr" height="65"></td>
+        <td><input type="image" onclick="buttonPress()" id="icp_three" alt="3" src="https://drive.google.com/uc?id=1sRtD9uhk4wdXoiTFAl_LTAP8sKR72pLD" height="65"></td>
+        <td align="right"><input type="image" onclick="buttonPress()" id="rcl" alt="RCL" src="https://drive.google.com/uc?id=1dtu3qtHRBh6aB2etzEjZD60ixH8V9lo6" height="65"></td>
+      </tr>
+      <tr>
+          <td><input type="image" onclick="buttonPress()" id="icp_four" alt="4" src="https://drive.google.com/uc?id=1GLGxVkSgplidoOGT67A71o0Igo1U2via" height="65"></td>
+          <td><input type="image" onclick="buttonPress()" id="icp_five" alt="5" src="https://drive.google.com/uc?id=1N11em3_uV0gwmV0mG3v8QsWS_G9DwfZZ" height="65"></td>
+          <td><input type="image" onclick="buttonPress()" id="icp_six" alt="6" src="https://drive.google.com/uc?id=1FxdLlQ2GiBJsHrENZbOh2JtOFjvSETvZ" height="65"></td>
+          <td align="right"><input type="image" onclick="buttonPress()" id="enter" alt="ENTR" src="https://drive.google.com/uc?id=1raKmQVpcZCE0JNFXiNA7-m0E79RocFMx" height="65"></td>
+        </tr>
+        <tr>
+            <td><input type="image" onclick="buttonPress()" id="icp_seven" alt="7" src="https://drive.google.com/uc?id=1S-AYScIQ6RIhFyBbhxYIO2I1Pz0gb9Su" height="65"></td>
+            <td><input type="image" onclick="buttonPress()" id="icp_eight" alt="8" src="https://drive.google.com/uc?id=1vMhVpNIto_0IA4n3IIbgk7hl21jXozhq" height="65"></td>
+            <td><input type="image" onclick="buttonPress()" id="icp_nine" alt="9" src="https://drive.google.com/uc?id=1GC6IlSErAFi2sQ3ZKZK9x84A2eBL6lI3" height="65"></td>
+            <td><input type="image" onclick="buttonPress()" id="icp_zero" alt="0" src="https://drive.google.com/uc?id=1uUqKexMwTKIb2D5bppC_i6R_ikM6omZq" height="65"></td>
+          </tr>
+  </tbody>
+</table>
+
+<script>
+var ded = {
+  line: 0,
+  scratch: '',
+  bullseye: ['','','','']
+};
+
+var positions = [
+  { bearing: -1, range: 0},
+  { bearing: -1, range: 0},
+  { bearing: -1, range: 0},
+  { bearing: -1, range: 0}
+];
+
+var directions = [
+  { bearing: -1, range: 0},
+  { bearing: -1, range: 0},
+  { bearing: -1, range: 0}
+];
+
+function focusUp() {
+  ded.line -= 1;
+    switch (ded.line){
+      case 1:
+        ded_bullseye.innerHTML   = 'BULL GRP2';
+        ded2_mrk_left.innerHTML  = ded2_mrk_right.innerHTML = '*';
+        ded3_mrk_left.innerHTML  = ded3_mrk_right.innerHTML = '';
+        break;
+      case 2:
+        ded_bullseye.innerHTML   = 'BULL GRP3';
+        ded3_mrk_left.innerHTML  = ded3_mrk_right.innerHTML = '*';
+        ded4_mrk_left.innerHTML  = ded4_mrk_right.innerHTML = '';
+        break;
+      default:
+        ded_bullseye.innerHTML   = 'BULL GRP1';
+        ded1_mrk_left.innerHTML  = ded1_mrk_right.innerHTML = '*';
+        ded2_mrk_left.innerHTML  = ded2_mrk_right.innerHTML = '';
+        ded.line = 0;
+        break;
+    }
+}
+
+function focusDown() {
+  ded.line += 1;
+    switch (ded.line){
+      case 1:
+        ded_bullseye.innerHTML   = 'BULL GRP2';
+        ded2_mrk_left.innerHTML  = ded2_mrk_right.innerHTML = '*';
+        ded1_mrk_left.innerHTML  = ded1_mrk_right.innerHTML = '';
+        break;
+      case 2:
+        ded_bullseye.innerHTML   = 'BULL GRP3';
+        ded3_mrk_left.innerHTML  = ded3_mrk_right.innerHTML = '*';
+        ded2_mrk_left.innerHTML  = ded2_mrk_right.innerHTML = '';
+        break;
+      case 3:
+        ded_bullseye.innerHTML   = 'BULL SELF';
+        ded4_mrk_left.innerHTML  = ded4_mrk_right.innerHTML = '*';
+        ded3_mrk_left.innerHTML  = ded3_mrk_right.innerHTML = '';
+        break;
+      default:
+        ded_bullseye.innerHTML   = 'BULL GRP1';
+        ded1_mrk_left.innerHTML  = ded1_mrk_right.innerHTML = '*';
+        ded4_mrk_left.innerHTML  = ded4_mrk_right.innerHTML = '';
+        ded.line = 0;
+        break;
+    }
+}
+
+function setDedLineFromScratch(){
+  switch (ded.line){
+      case 0: ded1_num.innerHTML = ded.scratch;
+        break;
+      case 1: ded2_num.innerHTML = ded.scratch;
+        break;
+      case 2: ded3_num.innerHTML = ded.scratch;
+        break;
+      case 3: ded4_num.innerHTML = ded.scratch;
+        break;
+      default:
+        break;
+  }
+}
+
+function scratchEntry(digit) {
+  if (ded.scratch.length < 7) {
+    ded.scratch += digit;
+    if (ded.scratch.length == 3) {
+      ded.scratch += ' ';
+    }
+  }
+}
+
+function getButtonPress(id){
+  const keys = ['icp_zero','icp_one','icp_two','icp_three','icp_four',
+              'icp_five','icp_six','icp_seven','icp_eight','icp_nine',
+               'enter','rcl'];
+  var key = 0;
+  while (id != keys[key]) { key++; }
+  return key;
+}
+
+function getKeyboardPress(value) {
+  var key = 0;
+
+  switch(value){
+    case  8: key = 11;
+      break;
+    case 13: key = 10;
+      break;
+    default:
+      if (value >= 48 && value < 58){
+        key = value - 48;
+      }
+      break;
+  }
+  return key;
+}
+
+function processKey(key) {
+  switch(key){
+    case 11: // RCL
+      if (ded.bullseye[ded.line] > 0 || ded.scratch > 0 ) {
+        ded.scratch = '';
+        ded.bullseye[ded.line] = ded.scratch;
+      }
+      else {
+        focusUp();
+        ded.scratch = ded.bullseye[ded.line];
+      }
+      setDedLineFromScratch();
+      break;
+
+    case 10: // ENTER
+      if (ded.scratch.length > 0 ) {
+        ded.bullseye[ded.line] = ded.scratch;
+      }
+      if (ded.scratch == '0') {
+        ded.scratch = '';
+        ded.bullseye[ded.line] = ded.scratch;
+        setDedLineFromScratch();
+      }
+      focusDown();
+      ded.scratch = ded.bullseye[ded.line];
+      setDedLineFromScratch();
+      ded.scratch = '';
+      determinePositions();
+      computeDirections();
+      udpateDisplay();
+      break;
+
+    default:
+      scratchEntry( key );
+      setDedLineFromScratch();
+      break;
+  }
+}
+
+function determinePositions() {
+  for (i = 0;i < 4;i++){
+    if (ded.bullseye[i].length > 0) {
+      data = ded.bullseye[i].split(" ",2);
+      positions[i].bearing = parseInt(data[0]);
+      positions[i].range = parseInt(data[1]);
+    }
+    else {
+      positions[i].bearing = -1;
+    }
+  }
+}
+
+function computeCourse(posFrom, posTo ) {
+  var rad1 = posFrom.bearing * Math.PI / 180;
+  var rng1 = posFrom.range;
+  var rad2 = posTo.bearing * Math.PI / 180;
+  var rng2 = posTo.range;
+  var x1   = rng1 * Math.cos(-rad1);
+  var y1   = rng1 * Math.sin(-rad1);
+  var x2   = rng2 * Math.cos(-rad2);
+  var y2   = rng2 * Math.sin(-rad2);
+  var dx   = x2 - x1;
+  var dy   = y2 - y1;
+  var rng  = Math.sqrt((Math.pow(dx,2) + Math.pow(dy,2)) );
+  var rad  = -Math.atan2(dy,dx);
+  var crs = rad * 180 / Math.PI;
+  if ( crs < 0.0 ) {
+    crs += 360;
+  }
+  return {bearing: crs, range: rng};
+}
+
+function computeDirections() {
+  for (i = 0;i < 3;i++){
+    if (positions[3].bearing >= 0 && positions[i].bearing >= 0) {
+      directions[i] = computeCourse(positions[3], positions[i]);
+      //alert("Bearing: " + Math.round(directions[i].bearing) + " Range: " + Math.round(directions[i].range));
+    }
+    else {
+      directions[i].bearing = -1;
+    }
+  }
+}
+
+function zeroPad(num, places) {
+  var zero = places - num.toString().length + 1;
+  return Array(+(zero > 0 && zero)).join("0") + num;
+}
+
+function udpateDisplay() {
+  // DED Row 1
+  if (directions[0].bearing >= 0){
+    azimuth = zeroPad(Math.round(directions[0].bearing), 3);
+    distance = zeroPad(Math.round(directions[0].range), 3);
+    ded1_bearing.innerHTML = azimuth + ' DEG';
+    ded1_range.innerHTML = distance + ' NM';
+  } else {
+    ded1_bearing.innerHTML = '---- DEG';
+    ded1_range.innerHTML = '---- NM';
+  }
+
+    // DED Row 2
+    if (directions[1].bearing >= 0){
+    azimuth = zeroPad(Math.round(directions[1].bearing), 3);
+    distance = zeroPad(Math.round(directions[1].range), 3);
+    ded2_bearing.innerHTML = azimuth + ' DEG';
+    ded2_range.innerHTML = distance + ' NM';
+  } else {
+    ded2_bearing.innerHTML = '---- DEG';
+    ded2_range.innerHTML = '---- NM';
+  }
+
+  // DED Row 3
+  if (directions[2].bearing >= 0){
+    azimuth = zeroPad(Math.round(directions[2].bearing), 3);
+    distance = zeroPad(Math.round(directions[2].range), 3);
+    ded3_bearing.innerHTML = azimuth + ' DEG';
+    ded3_range.innerHTML = distance + ' NM';
+  } else {
+    ded3_bearing.innerHTML = '---- DEG';
+    ded3_range.innerHTML = '---- NM';
+  }
+}
+
+document.onkeypress = function (e) {
+  e = e || window.event;
+  var key = getKeyboardPress(e.keyCode);
+  processKey(key);
+}
+
+function buttonPress () {
+  var key = getButtonPress(event.srcElement.id);
+  processKey(key);
+}
+
+</script>
+</body>
+</html>
